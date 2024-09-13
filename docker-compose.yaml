@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   timeline-service:
-    container_name: timeline
+    container_name: order_service
     build: ./
     ports:
       - "9091:9091"
