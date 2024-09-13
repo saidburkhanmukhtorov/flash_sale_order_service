@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package order_service;
+option go_package = "/genproto/order_service";
+
+import "google/protobuf/timestamp.proto";
+
+// BasketItem represents an item in a shopping basket.
+message BasketItem {
+  string id = 1;
+  string basket_id = 2;
+  string product_id = 3;
+  string flash_sale_event_product_id = 4;
+  string discount_product_id = 5;
+  int32 quantity = 6;
+  float unit_price = 7;
+  float total_price = 8;
+  string product_type = 9; // Possible values: 'REGULAR', 'FLASH_SALE', 'DISCOUNT'
+  google.protobuf.Timestamp created_at = 10;
+  google.protobuf.Timestamp updated_at = 11;
+}
+
+// CreateBasketItemRequest represents a request to create a new basket item.
+message CreateBasketItemRequest {
+  BasketItem basket_item = 1;
+}
+
+// CreateBasketItemResponse represents a response to a CreateBasketItemRequest.
+message CreateBasketItemResponse {
+  BasketItem basket_item = 1;
+}
+
+// GetBasketItemRequest represents a request to get a basket item by ID.
+message GetBasketItemRequest {
+  string id = 1;
+}
+
+// GetBasketItemResponse represents a response to a GetBasketItemRequest.
+message GetBasketItemResponse {
+  BasketItem basket_item = 1;
+}
+
+// DeleteBasketItemRequest represents a request to delete a basket item by ID.
+message DeleteBasketItemRequest {
+  string id = 1;
+}
+
+// DeleteBasketItemResponse represents a response to a DeleteBasketItemRequest.
+message DeleteBasketItemResponse {
+  string message = 1; // Success message
+}
+
+// ListBasketItemsRequest represents a request to list basket items.
+message ListBasketItemsRequest {
+  int32 page = 1;
+  int32 limit = 2;
+  string basket_id = 3; // Filter by basket_id
+}
+
+// ListBasketItemsResponse represents a response to a ListBasketItemsRequest.
+message ListBasketItemsResponse {
+  repeated BasketItem basket_items = 1;
+  int32 total = 2;
+}
+
+// BasketItemService defines the gRPC service for managing basket items.
+service BasketItemService {
+  rpc CreateBasketItem(CreateBasketItemRequest) returns (CreateBasketItemResponse);
+  rpc GetBasketItem(GetBasketItemRequest) returns (GetBasketItemResponse);
+  rpc DeleteBasketItem(DeleteBasketItemRequest) returns (DeleteBasketItemResponse);
+  rpc ListBasketItems(ListBasketItemsRequest) returns (ListBasketItemsResponse);
+}

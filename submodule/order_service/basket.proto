@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package order_service;
+option go_package = "/genproto/order_service";
+
+import "google/protobuf/timestamp.proto";
+
+// Basket represents a shopping basket.
+message Basket {
+  string id = 1;
+  string user_id = 2;
+  string status = 3; // 'OPEN', 'CHECKED_OUT'
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+}
+
+// CreateBasketRequest represents a request to create a new basket.
+message CreateBasketRequest {
+  Basket basket = 1;
+}
+
+// CreateBasketResponse represents a response to a CreateBasketRequest.
+message CreateBasketResponse {
+  Basket basket = 1;
+}
+
+// GetBasketRequest represents a request to get a basket by ID.
+message GetBasketRequest {
+  string id = 1;
+}
+
+// GetBasketResponse represents a response to a GetBasketRequest.
+message GetBasketResponse {
+  Basket basket = 1;
+}
+
+// UpdateBasketRequest represents a request to update an existing basket.
+message UpdateBasketRequest {
+  Basket basket = 1;
+}
+
+// UpdateBasketResponse represents a response to an UpdateBasketRequest.
+message UpdateBasketResponse {
+  Basket basket = 1;
+}
+
+// DeleteBasketRequest represents a request to delete a basket by ID.
+message DeleteBasketRequest {
+  string id = 1;
+}
+
+// DeleteBasketResponse represents a response to a DeleteBasketRequest.
+message DeleteBasketResponse {
+  string message = 1; // Success message
+}
+
+// ListBasketsRequest represents a request to list baskets.
+message ListBasketsRequest {
+  int32 page = 1;
+  int32 limit = 2;
+  string user_id = 3; // Filter by user_id
+}
+
+// ListBasketsResponse represents a response to a ListBasketsRequest.
+message ListBasketsResponse {
+  repeated Basket baskets = 1;
+  int32 total = 2;
+}
+
+// UpdateBasketStatusRequest represents a request to update the status of a basket.
+message UpdateBasketStatusRequest {
+  string id = 1;
+  string status = 2; // New status
+}
+
+// UpdateBasketStatusResponse represents a response to an UpdateBasketStatusRequest.
+message UpdateBasketStatusResponse {
+  Basket basket = 1;
+}
+
+// BasketService defines the gRPC service for managing baskets.
+service BasketService {
+  rpc CreateBasket(CreateBasketRequest) returns (CreateBasketResponse);
+  rpc GetBasket(GetBasketRequest) returns (GetBasketResponse);
+  rpc UpdateBasket(UpdateBasketRequest) returns (UpdateBasketResponse);
+  rpc DeleteBasket(DeleteBasketRequest) returns (DeleteBasketResponse);
+  rpc ListBaskets(ListBasketsRequest) returns (ListBasketsResponse);
+  rpc UpdateBasketStatus(UpdateBasketStatusRequest) returns (UpdateBasketStatusResponse);
+}

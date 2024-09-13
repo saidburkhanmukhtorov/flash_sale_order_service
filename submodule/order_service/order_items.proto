@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package order_service;
+option go_package = "/genproto/order_service";
+
+import "google/protobuf/timestamp.proto";
+
+// OrderItem represents an item in an order.
+message OrderItem {
+  string id = 1;
+  string order_id = 2;
+  string product_id = 3;
+  string flash_sale_event_product_id = 4;
+  string discount_product_id = 5;
+  int32 quantity = 6;
+  float unit_price = 7;
+  float total_price = 8;
+  float discount_applied = 9;
+  string product_type = 10; // Possible values: 'REGULAR', 'FLASH_SALE', 'DISCOUNT'
+  google.protobuf.Timestamp created_at = 11;
+  google.protobuf.Timestamp updated_at = 12;
+}
+
+// GetOrderItemRequest represents a request to get an order item by ID.
+message GetOrderItemRequest {
+  string id = 1;
+}
+
+// GetOrderItemResponse represents a response to a GetOrderItemRequest.
+message GetOrderItemResponse {
+  OrderItem order_item = 1;
+}
+
+// ListOrderItemsRequest represents a request to list order items.
+message ListOrderItemsRequest {
+  int32 page = 1;
+  int32 limit = 2;
+  string order_id = 3; // Filter by order_id
+}
+
+// ListOrderItemsResponse represents a response to a ListOrderItemsRequest.
+message ListOrderItemsResponse {
+  repeated OrderItem order_items = 1;
+  int32 total = 2;
+}
+
+// ConvertBasketToOrderItemsRequest represents a request to convert basket items to order items.
+message ConvertBasketToOrderItemsRequest {
+  string basket_id = 1;
+  string order_id = 2;
+}
+
+// ConvertBasketToOrderItemsResponse represents a response to a ConvertBasketToOrderItemsRequest.
+message ConvertBasketToOrderItemsResponse {
+   string id = 1;
+}
+
+// DeleteOrderItemRequest represents a request to delete an order item by ID.
+message DeleteOrderItemRequest {
+  string id = 1;
+}
+
+// DeleteOrderItemResponse represents a response to a DeleteOrderItemRequest.
+message DeleteOrderItemResponse {
+  string message = 1; // Success message 
+}
+
+// OrderItemService defines the gRPC service for managing order items.
+service OrderItemService {
+  rpc GetOrderItem(GetOrderItemRequest) returns (GetOrderItemResponse);
+  rpc ListOrderItems(ListOrderItemsRequest) returns (ListOrderItemsResponse);
+  rpc ConvertBasketToOrderItems(ConvertBasketToOrderItemsRequest) returns (ConvertBasketToOrderItemsResponse);
+  rpc DeleteOrderItem(DeleteOrderItemRequest) returns (DeleteOrderItemResponse);
+}
