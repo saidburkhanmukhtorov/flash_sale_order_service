@@ -11,10 +11,10 @@ import (
 func createDBConnection(t *testing.T) *pgx.Conn {
 	dbCon := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s",
 		"sayyidmuhammad",
-		"rootpasstest",
-		"18.153.96.177",
+		"root",
+		"localhost",
 		5432,
-		"flash_sales",
+		"postgres",
 	)
 
 	// Connecting to postgres
